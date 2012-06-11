@@ -6,4 +6,8 @@ class Application < Sinatra::Base
   get '/' do
     erb :index
   end
+  
+  post '/uploads' do
+    redirect to('/')
+  end
 end
