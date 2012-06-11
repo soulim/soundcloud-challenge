@@ -19,8 +19,12 @@ module Rack
 
       def read(*args)
         @input.read(*args).tap do |chunk|
-          @received += Rack::Utils.bytesize(chunk)
+          self.increment Rack::Utils.bytesize(chunk)
         end
+      end
+      
+      def increment(value)
+        @received += value
       end
     end
   end

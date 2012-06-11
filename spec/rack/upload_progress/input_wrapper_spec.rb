@@ -37,8 +37,15 @@ describe Rack::UploadProgress::InputWrapper do
       subject.read
     end
 
-    it 'change :received counter' do
-      expect { subject.read }.to change { subject.received }
+    it 'increments input wrapper counter' do
+      subject.should_receive :increment
+      subject.read
+    end
+  end
+  
+  describe '#increment' do
+    it 'changes :received counter' do
+      expect { subject.increment(1) }.to change { subject.received }
     end
   end
 end
