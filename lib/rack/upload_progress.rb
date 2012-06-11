@@ -1,5 +1,3 @@
-require 'rack'
-
 # Rack middleware to handle upload process with progress indication
 module Rack
   module UploadProgress
