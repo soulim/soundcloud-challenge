@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'lib/rack/upload_progress'
 
-describe Rack::UploadProgress do
+describe Rack::UploadProgress::Middleware do
   let(:app) { double('application') }
-  let(:env) { double('environment') }
+  let(:env) { double('environment').as_null_object }
 
-  subject { Rack::UploadProgress.new(app) }
+  subject { Rack::UploadProgress::Middleware.new(app) }
 
   describe '#call' do
     it 'passes call to application' do
