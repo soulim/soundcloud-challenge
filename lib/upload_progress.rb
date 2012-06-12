@@ -8,6 +8,6 @@ module UploadProgress
   module Queue
     autoload :Base, File.join(QUEUE_PATH, 'base')
     autoload :DRb,  File.join(QUEUE_PATH, 'drb')
-    autoload :Task, File.join(QUEUE_PATH, 'task')
+    autoload :File, File.join(QUEUE_PATH, 'file')
   end
 end

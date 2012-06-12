@@ -5,8 +5,8 @@ module UploadProgress
         @queue = {}
       end
       
-      def push(progress_id, size)
-        @queue[progress_id] = Task.new('starting', size, 0)
+      def start(progress_id, size)
+        @queue[progress_id] = File.new(size)
       end
 
       def get(progress_id)

@@ -18,7 +18,7 @@ module UploadProgress
         input = InputWrapper.new(env, params[QUERY_PARAM], method(:update_queue))
         env['rack.input'] = input
 
-        @queue.push(input.progress_id, input.size)
+        @queue.start(input.progress_id, input.size)
 
         @app.call(env)
       elsif status_request?(env, @status_path)
@@ -32,6 +32,7 @@ module UploadProgress
     
     def update_queue(progress_id, received)
       # puts "callback: progress_id -> #{progress_id}, received -> #{received}"
+      @queue.update(progress_id, received)
     end
 
     def upload_request?(env, upload_path)

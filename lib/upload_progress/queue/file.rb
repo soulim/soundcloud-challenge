@@ -1,14 +1,14 @@
 module UploadProgress
   module Queue
-    class Task
+    class File
       attr_reader :status
       attr_reader :size
       attr_reader :received
 
-      def initialize(status = 'starting', size = 0, received = 0)
-        @status   = status
-        @size     = size
-        @received = received
+      def initialize(size = 0)
+        @status   = 'starting'
+        @size     = size.to_i
+        @received = 0
       end
       
       def update(received)
