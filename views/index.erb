@@ -1,7 +1,46 @@
 <h1>SuperUpload</h1>
 
-<form action="/uploads?X-Progress-ID=<%= Digest::MD5.hexdigest(Time.now.to_f.to_s) %>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+<%= token = Digest::MD5.hexdigest(Time.now.to_f.to_s) %>
+
+<form id="upload-form" action="/uploads?X-Progress-ID=<%= token %>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
   <div><input type="file" name="file" /></div>
   <div><textarea name="description" rows="8" cols="40"></textarea></div>
   <div><input type="submit" value="Continue &rarr;"></div>
 </form>
+
+<script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+  // Build an iframe
+  var iframe = $('<iframe />').attr({
+      src: '#',
+      name: 'upload-target',
+    }).css({
+      border: 0,
+      width: 0,
+      height: 0
+    });
+
+  // Append iframe to the page
+  $('#upload-form').after(iframe).attr({
+      target: iframe.attr('name')
+    });
+
+  var interval;
+
+  $('#upload-form input[type="file"]').change(function() {
+    $('#upload-form').submit();
+
+    interval = setInterval(function() {
+      $.get('/status?X-Progress-ID=<%= token %>', function(data) {
+        console.log(data);
+        // progress = Math.round(data['progress'] / data['content_length']) * 100;
+        // console.log(data['progress'] + ' -> ' + data['content_length']);
+        // 
+        // if (progress == 100) {
+        //   clearInterval(interval);
+        // };
+      });
+    }, 1000);
+  });  
+
+</script>

@@ -14,7 +14,9 @@ module UploadProgress
       end
       
       def update(progress_id, received)
-        self.get(progress_id).update(received)
+        file = @queue[progress_id]
+        file.update(received)
+        @queue[progress_id] = file
       end
     end
   end

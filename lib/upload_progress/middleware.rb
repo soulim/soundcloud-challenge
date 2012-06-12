@@ -12,9 +12,9 @@ module UploadProgress
     end
     
     def call(env)
-      if upload_request?(env, @upload_path)
-        params = Rack::Utils.parse_query(env['QUERY_STRING'])
+      params = Rack::Utils.parse_query(env['QUERY_STRING'])
 
+      if upload_request?(env, @upload_path)
         input = InputWrapper.new(env, params[QUERY_PARAM], method(:update_queue))
         env['rack.input'] = input
 
@@ -22,7 +22,8 @@ module UploadProgress
 
         @app.call(env)
       elsif status_request?(env, @status_path)
-        [200, { 'Content-Type' => 'text/plain' }, ["status"]]
+        file = @queue.get(params[QUERY_PARAM])
+        Rack::Response.new([file.to_json], 200, { 'Content-Type' => 'application/json' })
       else
         @app.call(env)
       end
@@ -31,7 +32,6 @@ module UploadProgress
     private
     
     def update_queue(progress_id, received)
-      # puts "callback: progress_id -> #{progress_id}, received -> #{received}"
       @queue.update(progress_id, received)
     end
 
