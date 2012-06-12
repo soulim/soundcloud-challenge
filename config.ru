@@ -1,5 +1,5 @@
 require './lib/application'
-require './lib/rack/upload_progress'
+require './lib/upload_progress'
 
-use Rack::UploadProgress::Middleware
+use UploadProgress::Middleware
 run Application
