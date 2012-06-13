@@ -14,18 +14,28 @@ module UploadProgress
     end
     
     def call(env)
-      params = Rack::Utils.parse_query(env['QUERY_STRING'])
-
       if upload_request?(env, @upload_path)
-        input = InputWrapper.new(env, params[QUERY_PARAM], method(:update_queue))
-        env['rack.input'] = input
+        progress_id = get_progress_id(env)
+        input       = InputWrapper.new(env, progress_id, method(:update_queue))
 
+        env['rack.input'] = input
         @queue.start(input.progress_id, input.size)
 
         @app.call(env)
       elsif status_request?(env, @status_path)
-        file = @queue.get(params[QUERY_PARAM])
-        Rack::Response.new([file.as_json.to_json], 200, { 'Content-Type' => 'application/json' })
+        progress_id = get_progress_id(env)
+        
+        if file = @queue.get(progress_id)
+          status  = 200
+          headers = { 'Content-Type' => 'application/json' }
+          body    = [file.as_json.to_json]
+        else
+          status  = 404
+          headers = { 'Content-Type' => 'text/plain' }
+          body    = ["Not found"]
+        end
+        
+        Rack::Response.new(body, status, headers)
       else
         @app.call(env)
       end
@@ -58,7 +68,16 @@ module UploadProgress
     end
     
     def include_progress_id?(env)
-      env['HTTP_X_PROGRESS_ID'] || env['QUERY_STRING'].include?(QUERY_PARAM)
+      !get_progress_id(env).nil?
+    end
+    
+    def get_progress_id(env)
+      if env['HTTP_X_PROGRESS_ID']
+        env['HTTP_X_PROGRESS_ID']
+      else
+        params = Rack::Utils.parse_query(env['QUERY_STRING'])
+        params[QUERY_PARAM]
+      end
     end
     
     def status_request?(env, status_path)
