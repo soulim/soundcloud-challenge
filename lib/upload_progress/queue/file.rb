@@ -1,5 +1,3 @@
-require 'json'
-
 module UploadProgress
   module Queue
     class File
@@ -15,6 +13,9 @@ module UploadProgress
       
       def update(received)
         @received = received
+        @status   = self.done? ? 'done' : 'uploading'
+        
+        self
       end
       
       def done?
@@ -27,10 +28,6 @@ module UploadProgress
           :size     => @size,
           :received => @received
         }
-      end
-      
-      def to_json(*args)
-        as_json.to_json(*args)
       end
     end
   end

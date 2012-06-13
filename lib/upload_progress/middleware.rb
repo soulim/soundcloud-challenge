@@ -1,3 +1,5 @@
+require 'json'
+
 module UploadProgress
   class Middleware
     UPLOAD_PATH = '/uploads'
@@ -23,7 +25,7 @@ module UploadProgress
         @app.call(env)
       elsif status_request?(env, @status_path)
         file = @queue.get(params[QUERY_PARAM])
-        Rack::Response.new([file.to_json], 200, { 'Content-Type' => 'application/json' })
+        Rack::Response.new([file.as_json.to_json], 200, { 'Content-Type' => 'application/json' })
       else
         @app.call(env)
       end

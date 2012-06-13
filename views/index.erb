@@ -32,13 +32,13 @@
 
     interval = setInterval(function() {
       $.get('/status?X-Progress-ID=<%= token %>', function(data) {
-        console.log(data);
-        // progress = Math.round(data['progress'] / data['content_length']) * 100;
-        // console.log(data['progress'] + ' -> ' + data['content_length']);
-        // 
-        // if (progress == 100) {
-        //   clearInterval(interval);
-        // };
+        progress = Math.round(data['received'] / data['size']) * 100;
+        console.log(data['received'] + ' -> ' + data['size']);
+        
+        if (data['status'] == 'done') {
+          $('#upload-form input[type="file"]').val(null);
+          clearInterval(interval);
+        };
       });
     }, 1000);
   });  

@@ -1,11 +1,5 @@
-require 'forwardable'
-
 module UploadProgress
   class InputWrapper
-    extend Forwardable
-    
-    def_delegators :@input, :gets, :each, :rewind
-    
     attr_reader :progress_id
     attr_reader :size
     attr_reader :received
@@ -17,15 +11,40 @@ module UploadProgress
       @progress_id = progress_id
       @callback    = callback
     end
+    
+    def rewind
+      @input.rewind
+    end
+
+    def gets
+      chunk = @input.gets
+      self.increment(chunk)
+    
+      chunk
+    end
 
     def read(*args)
-      @input.read(*args).tap do |chunk|
-        self.increment Rack::Utils.bytesize(chunk)
+      chunk = @input.read(*args)
+      self.increment(chunk)
+      
+      chunk
+    end
+
+    def each
+      @input.each do |chunk|
+        p chunk
+        self.increment(chunk)
+        yield chunk
       end
     end
     
-    def increment(value)
-      @received += value
+    def increment(chunk)
+      if chunk.nil?
+        @received = @size
+      else
+        @received += Rack::Utils.bytesize(chunk)
+      end
+      
       @callback.call(@progress_id, @received)
 
       return @received
