@@ -16,6 +16,7 @@ class Application < Sinatra::Base
       FileUtils.copy_file(params[:file][:tempfile].path,
                           File.join(path, params[:file][:filename]))
     end
+    
     redirect to('/')
   end
 end

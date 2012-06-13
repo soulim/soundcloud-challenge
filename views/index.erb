@@ -5,44 +5,14 @@
 <form id="upload-form" action="/uploads?X-Progress-ID=<%= token %>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
   <div><input type="file" name="file" /></div>
   <div><textarea name="description" rows="8" cols="40"></textarea></div>
-  <div><input type="submit" value="Continue &rarr;"></div>
+  <div><input type="submit" value="Save"></div>
 </form>
 
-<script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/assets/javascripts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/assets/javascripts/jquery.superupload.js"></script>
 <script type="text/javascript" charset="utf-8">
-  // Build an iframe
-  var iframe = $('<iframe />').attr({
-      src: '#',
-      name: 'upload-target',
-    }).css({
-      border: 0,
-      width: 0,
-      height: 0
-    });
-
-  // Append iframe to the page
-  $('#upload-form').after(iframe).attr({
-      target: iframe.attr('name')
-    });
-
-  var interval;
-
-  $('#upload-form input[type="file"]').change(function() {
-    var $this = $(this);
-
-    $('#upload-form').submit();
-    $this.attr('disabled', 'disabled');
-
-    interval = setInterval(function() {
-      $.get('/status?X-Progress-ID=<%= token %>', function(data) {
-        progress = Math.round(data['received'] / data['size']) * 100;
-        console.log(data['received'] + ' -> ' + data['size']);
-        
-        if (data['status'] == 'done') {
-          clearInterval(interval);
-        };
-      });
-    }, 1000);
-  });  
-
+  $('#upload-form').superupload({
+    status_path: '/status',
+    progress_id: '<%= token %>'
+  });
 </script>
