@@ -3,4 +3,4 @@ Rainbows! do
   client_max_body_size 500*1024*1024 # 500 megabytes
 end
 
-worker_processes 4
+worker_processes 16
