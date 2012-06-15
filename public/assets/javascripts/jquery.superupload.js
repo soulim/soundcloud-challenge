@@ -1,7 +1,9 @@
 (function($) {
   $.fn.superupload = function(options) {
-    function start(form, fileInput, statusLabel) {
+    function start(form, fileInput, iframe, statusLabel) {
+      form.after(iframe).attr('target', iframe.attr('name'));
       fileInput.after(statusLabel);
+      
       form.submit();
       
       form.attr('target', null);
@@ -38,8 +40,9 @@
               height: 0
             });
       
-      form.after(iframe).attr('target', iframe.attr('name'));
-      fileInput.change(function() { start(form, fileInput, statusLabel) } );
+      fileInput.change(function() {
+        start(form, fileInput, iframe, statusLabel)
+      });
     };
 
     var timer   = null,
