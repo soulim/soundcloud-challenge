@@ -25,7 +25,8 @@
         src="/assets/javascripts/jquery.superupload.js"></script>
 <script type="text/javascript" charset="utf-8">
   $('#upload-form').superupload({
-    status_path: '/status',
-    progress_id: '<%= token %>'
+    uploads_path: '/uploads',
+    status_path:  '/status',
+    progress_id:  '<%= token %>'
   });
 </script>

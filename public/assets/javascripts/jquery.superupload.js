@@ -12,18 +12,29 @@
       timer = setInterval(function() { update(statusLabel) }, options.interval);
     };
     
-    function stop() {
-      // ... request file path
+    function stop(statusLabel) {
       clearInterval(timer);
+      
+      $.get(options.uploads_path + '/' + options.progress_id,
+      function(data) {
+        var links = [];
+        
+        for (filename in data['files']) {
+          links.push($('<a />').attr('href', data['files'][filename]).
+                                text('Uploaded to here.'));
+        };
+
+        $(links).each(function() { this.appendTo(statusLabel) });
+      });
     };
 
     function update(statusLabel) {
       $.get(options.status_path, { 'X-Progress-ID': options.progress_id },
         function(data) {
           progress = Math.round((data.received / data.size) * 100);
-          statusLabel.text('Status: ' + progress + '%.');
+          statusLabel.text('Status: ' + progress + '%. ');
 
-          if (data.status == 'done') { stop(); }
+          if (data.status == 'done') { stop(statusLabel); }
         });
     };
         
@@ -47,9 +58,10 @@
 
     var timer   = null,
         options = $.extend({
-            status_path: '/status',
-            progress_id: '',
-            interval: 1000
+            uploads_path: '/uploads',
+            status_path:  '/status',
+            progress_id:  '',
+            interval:     1000
           }, options);
 
     return  this.each(function () {

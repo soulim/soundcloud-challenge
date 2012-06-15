@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'json'
 
 module SuperUpload
   class Application < Sinatra::Base
@@ -26,7 +27,12 @@ module SuperUpload
       @description = get_description(progress_id)
       @files       = public_files(progress_id)
 
-      erb :show
+      if request.xhr?
+        content_type :json
+        { files: @files, description: @description }.to_json
+      else
+        erb :show
+      end
     end
   end
 end

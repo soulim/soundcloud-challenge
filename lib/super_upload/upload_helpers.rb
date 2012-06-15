@@ -33,10 +33,8 @@ module SuperUpload
     end
     
     def public_files(id)
-      base_path = File.join(UPLOAD_PATH, id)
-      
       get_uploads(id).reduce({}) do |result, filename|
-        result[filename] = "#{base_path}/#{filename}"
+        result[filename] = "/#{UPLOAD_DIR}/#{id}/#{filename}"
         result
       end
     end
