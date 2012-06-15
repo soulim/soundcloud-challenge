@@ -16,16 +16,16 @@
       clearInterval(timer);
       
       $.get(options.uploads_path + '/' + options.progress_id,
-      function(data) {
-        var links = [];
-        
-        for (filename in data['files']) {
-          links.push($('<a />').attr('href', data['files'][filename]).
-                                text('Uploaded to here.'));
-        };
-
-        $(links).each(function() { this.appendTo(statusLabel) });
-      });
+        function(data) {
+          var links = [];
+          
+          for (filename in data['files']) {
+            links.push($('<a />').attr('href', data['files'][filename]).
+                                  text('Uploaded to here.'));
+          };
+  
+          $(links).each(function() { this.appendTo(statusLabel) });
+        });
     };
 
     function update(statusLabel) {
