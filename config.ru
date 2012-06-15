@@ -1,5 +1,5 @@
-require './lib/application'
+require './lib/super_upload'
 require './lib/upload_progress'
 
 use UploadProgress::Middleware
-run Application
+run SuperUpload::Application

@@ -7,7 +7,7 @@ describe UploadProgress::Queue::File do
       expect { subject.update(1) }.to change { subject.received }
     end
     
-    context 'if is done' do
+    context 'if it is done' do
       before { subject.stub(done?: true) }
       
       it 'sets :status to "done"' do
@@ -16,7 +16,7 @@ describe UploadProgress::Queue::File do
       end
     end
 
-    context 'if is not done' do
+    context 'if it is not done' do
       before { subject.stub(done?: false) }
 
       it 'sets :status to "uploading"' do

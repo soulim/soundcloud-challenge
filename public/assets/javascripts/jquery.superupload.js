@@ -11,6 +11,7 @@
     };
     
     function stop() {
+      // ... request file path
       clearInterval(timer);
     };
 

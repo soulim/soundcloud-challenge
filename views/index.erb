@@ -1,15 +1,28 @@
-<h1>SuperUpload</h1>
+<div class="page-header">
+  <h1>SuperUpload</h1>
+</div>
 
-<%= token = Digest::MD5.hexdigest(Time.now.to_f.to_s) %>
+<% token = Digest::MD5.hexdigest(Time.now.to_f.to_s) %>
 
-<form id="upload-form" action="/uploads?X-Progress-ID=<%= token %>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-  <div><input type="file" name="file" /></div>
-  <div><textarea name="description" rows="8" cols="40"></textarea></div>
-  <div><input type="submit" value="Save"></div>
-</form>
+<div class="form">
+  <form id="upload-form" action="/uploads?X-Progress-ID=<%= token %>"
+        method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <div class="control">
+      <input type="file" name="file" />
+    </div>
+    <div class="control">
+      <textarea name="description" rows="8" cols="80" class="textarea"></textarea>
+    </div>
+    <div class="buttons">
+      <input type="submit" value="Save" />
+    </div>
+  </form>
+</div>
 
-<script type="text/javascript" charset="utf-8" src="/assets/javascripts/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="/assets/javascripts/jquery.superupload.js"></script>
+<script type="text/javascript" charset="utf-8"
+        src="/assets/javascripts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" charset="utf-8"
+        src="/assets/javascripts/jquery.superupload.js"></script>
 <script type="text/javascript" charset="utf-8">
   $('#upload-form').superupload({
     status_path: '/status',

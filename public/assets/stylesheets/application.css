@@ -5,7 +5,40 @@ html, body {
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
-  line-height: 18px;
   color: #333333;
-  background-color: #ffffff;
+  background-color: #EEE;
+}
+h1 {
+  font-size: 22px;
+}
+a {
+  color: #0088cc;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #005580;
+  text-decoration: underline;
+}
+
+.page {
+  width: 800px;
+  margin: 0 auto;
+  padding: 18px 36px;
+  background-color: #FFF;
+}
+.page-header {
+  margin-bottom: 18px;
+  padding: 18px 0;
+  border-bottom: 1px #EEE solid;
+}
+.form {}
+.form .control {
+  padding: 3px 0;
+}
+.form .buttons {
+  text-align: right;
+}
+.form .textarea {
+  width: 100%;
 }

@@ -3,7 +3,7 @@ require 'lib/upload_progress'
 
 describe UploadProgress::Queue::Base do
   let(:progress_id) { 'foo' }
-  let(:file) { double('file').as_null_object }
+  let(:file)        { double('file').as_null_object }
   
   describe '#get' do
     before { subject.set(progress_id, file) }
