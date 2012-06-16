@@ -2,10 +2,8 @@
   <h1>SuperUpload</h1>
 </div>
 
-<% token = Digest::MD5.hexdigest(Time.now.to_f.to_s) %>
-
 <div class="form">
-  <form id="upload-form" action="/uploads?X-Progress-ID=<%= token %>"
+  <form id="upload-form" action="/uploads?X-Progress-ID=<%= @progress_id %>"
         method="post" accept-charset="utf-8" enctype="multipart/form-data">
     <div class="control">
       <input type="file" name="file" />
@@ -27,6 +25,6 @@
   $('#upload-form').superupload({
     uploads_path: '/uploads',
     status_path:  '/status',
-    progress_id:  '<%= token %>'
+    progress_id:  '<%= @progress_id %>'
   });
 </script>

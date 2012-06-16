@@ -8,6 +8,7 @@ module SuperUpload
     helpers UploadHelpers, ProgressIdHelpers, ERB::Util
 
     get '/' do
+      @progress_id = generate_progress_id
       erb :index
     end
 
