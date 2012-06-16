@@ -15,36 +15,41 @@
     function stop(statusLabel) {
       clearInterval(timer);
       
-      $.get(options.uploads_path + '/' + options.progress_id,
-        function(data) {
-          var links = [];
-          
-          for (filename in data['files']) {
-            links.push($('<a />').attr('href', data['files'][filename]).
-                                  text('Uploaded to here.'));
-          };
-  
-          $(links).each(function() { this.appendTo(statusLabel) });
+      $.ajax({
+        'url': options.uploads_path + '/' + options.progress_id,
+        'success': function(data) {
+            var links = [];
+            
+            for (filename in data['files']) {
+              links.push($('<a />').attr('href', data['files'][filename]).
+                                    text('Uploaded to here.'));
+            };
+
+            $(links).each(function() { this.appendTo(statusLabel) });
+          }
         });
     };
 
     function update(statusLabel) {
-      $.get(options.status_path, { 'X-Progress-ID': options.progress_id },
-        function(data) {
-          progress = Math.round((data.received / data.size) * 100);
-          statusLabel.text('Status: ' + progress + '%. ');
+      $.ajax({
+        'url': options.status_path,
+        'data': { 'X-Progress-ID': options.progress_id },
+        'cache': false,
+        'success': function(data) {
+            progress = Math.round((data.received / data.size) * 100);
+            statusLabel.text('Status: ' + progress + '%. ');
 
-          if (data.status == 'done') { stop(statusLabel); }
-        });
+            if (data.status == 'done') { stop(statusLabel); }
+          }
+      });
     };
         
     function setup(form) {
       var form        = $(form),
           fileInput   = form.find('input[type=file]'),
           statusLabel = $('<div />'),
-          iframe      = $('<iframe />').attr({
-              src:  '#',
-              name: 'upload-target'
+          iframe      = $('<iframe name="upload-target" />').attr({
+              src:  '#'
             }).css({
               border: 0,
               width:  0,
