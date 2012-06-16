@@ -24,9 +24,9 @@ display both the title and the path to the file.
 
 ## Results
 
-**SuperUpload** is application based on Sinatra. It uses UploadProgress
+**SuperUpload** is an application based on Sinatra. It uses UploadProgress
 middleware to handle upload process. This middleware has been created as
-part of challenge.
+part of the challenge.
 
 ### Demo
 
@@ -35,7 +35,7 @@ part of challenge.
 ### Basic idea
 
 The idea of middleware is based on special wrapper around `env['rack.input']`.
-This wrapper will count the amount of received data each time as Rack
+This wrapper counts the amount of received data each time as Rack
 application or middleware reads from `env['rack.input']`.
 
 UploadProgress uses simple queue to store information about simultaneous uploads.
@@ -52,11 +52,11 @@ I have tried Thin and Unicorn servers.
 Thin has input stream buffering and it blocks possibility to measure upload
 progress.
 
-Unicorn supports direct access to input steam, but this server should not
-work with HTTP requests directly. I have tried Nginx as proxy, but it buffered
-uploaded file too.
+Unicorn supports direct access to input stream, but this server should not
+work with HTTP requests directly. I have tried Nginx as proxy, but it buffers
+input stream too.
 
-So my server of choice is Rainbows.
+My server of choice is Rainbows.
 
 ### How to run SuperUpload locally
 
