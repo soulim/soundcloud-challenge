@@ -22,12 +22,19 @@ a:hover {
 }
 
 .page {
-  width: 800px;
+  width: 500px;
   margin: 0 auto;
+}
+.content {
   padding: 18px 36px;
   background-color: #FFF;
 }
-.page-header {
+.footer {
+  padding: 0 36px;
+  font-size: 11px;
+  color: #AAA;
+}
+.header {
   margin-bottom: 18px;
   padding: 18px 0;
   border-bottom: 1px #EEE solid;

@@ -3,22 +3,22 @@
     function start(form, fileInput, iframe, statusLabel) {
       form.after(iframe).attr('target', iframe.attr('name'));
       fileInput.after(statusLabel);
-      
+
       form.submit();
-      
+
       form.attr('target', null);
       fileInput.attr('disabled', 'disabled')
-      
+
       setTimer(statusLabel);
     };
-    
+
     function stop(statusLabel) {
       $.ajax({
         'url': options.uploads_path + '/' + options.progress_id,
         'cache': false,
         'success': function(data) {
             var links = [];
-            
+
             for (filename in data['files']) {
               links.push($('<a />').attr('href', data['files'][filename]).
                                     text('Uploaded to here.'));
@@ -46,11 +46,11 @@
           }
       });
     };
-    
+
     function setTimer(statusLabel) {
       setTimeout(function() { update(statusLabel); }, options.interval);
     };
-    
+
     function setup(form) {
       var form        = $(form),
           fileInput   = form.find('input[type=file]'),
@@ -62,7 +62,7 @@
               width:  0,
               height: 0
             });
-      
+
       fileInput.change(function() {
         start(form, fileInput, iframe, statusLabel);
       });

@@ -4,9 +4,9 @@ require 'lib/super_upload'
 describe SuperUpload::UploadHelpers do
   let(:id)          { 'foo' }
   let(:description) { 'description text' }
-  
+
   subject { double('app').extend(SuperUpload::UploadHelpers) }
-    
+
   describe '#store_file' do
     before do
       FileUtils.stub(:mkdir_p)
@@ -23,7 +23,7 @@ describe SuperUpload::UploadHelpers do
       subject.store_file(id, 'source/path', 'file_name')
     end
   end
-  
+
   describe '#store_description' do
     let(:file_handle) { double('file_handle').as_null_object }
 
@@ -36,7 +36,7 @@ describe SuperUpload::UploadHelpers do
       FileUtils.should_receive(:mkdir_p)
       subject.store_description(id, description)
     end
-    
+
     it 'opens file to store description' do
       File.should_receive(:open)
       subject.store_description(id, description)
@@ -47,35 +47,35 @@ describe SuperUpload::UploadHelpers do
       subject.store_description(id, description)
     end
   end
-  
+
   describe '#get_uploads' do
     before do
       Dir.stub(:[] => ['file.ext', "#{id}.txt"])
     end
-    
+
     it 'takes list of uploaded files' do
       Dir.should_receive(:[])
       subject.get_uploads(id)
     end
-    
+
     it 'rejects description file from list' do
       list = subject.get_uploads(id)
       list.should_not include("#{id}.txt")
     end
   end
-  
+
   describe '#get_description' do
     context 'if file exists' do
       before do
         File.stub(exists?: true)
         File.stub(read: description)
       end
-      
+
       it 'reads description from file' do
         File.should_receive(:read)
         subject.get_description(id)
       end
-      
+
       it 'returns description' do
         subject.get_description(id).should == description
       end
@@ -83,13 +83,13 @@ describe SuperUpload::UploadHelpers do
 
     context 'if file does not exist' do
       before { File.stub(exists?: false) }
-      
+
       it 'returns empty string' do
         subject.get_description(id).should == ''
       end
     end
   end
-  
+
   describe '#public_files' do
     before { subject.stub(get_uploads: []) }
 

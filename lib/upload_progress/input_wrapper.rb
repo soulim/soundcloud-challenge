@@ -11,7 +11,7 @@ module UploadProgress
       @progress_id = progress_id
       @callback    = callback
     end
-    
+
     def rewind
       @input.rewind
     end
@@ -19,32 +19,31 @@ module UploadProgress
     def gets
       chunk = @input.gets
       self.increment(chunk)
-    
+
       chunk
     end
 
     def read(*args)
       chunk = @input.read(*args)
       self.increment(chunk)
-      
+
       chunk
     end
 
     def each
       @input.each do |chunk|
-        p chunk
         self.increment(chunk)
         yield chunk
       end
     end
-    
+
     def increment(chunk)
       if chunk.nil?
         @received = @size
       else
         @received += Rack::Utils.bytesize(chunk)
       end
-      
+
       @callback.call(@progress_id, @received)
 
       return @received

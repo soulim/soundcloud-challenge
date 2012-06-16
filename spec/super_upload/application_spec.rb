@@ -33,7 +33,7 @@ describe SuperUpload::Application do
 
       last_request.url.should == 'http://example.org/uploads/foo'
     end
-    
+
     context 'if file has been posted' do
       it 'stores uploaded file' do
         SuperUpload::Application.any_instance.should_receive(:store_file)
@@ -46,12 +46,12 @@ describe SuperUpload::Application do
     context 'if description has been posted' do
       it 'stores description' do
         SuperUpload::Application.any_instance.should_receive(:store_description)
-      
+
         post '/uploads?X-Progress-ID=foo', description: description
       end
     end
   end
-  
+
   describe 'GET /uploads/:progress_id' do
     before do
       SuperUpload::Application.any_instance.stub(get_description: '')
@@ -66,13 +66,13 @@ describe SuperUpload::Application do
 
     it 'gets description' do
         SuperUpload::Application.any_instance.should_receive(:get_description)
-        
+
         get '/uploads/foo'
     end
 
     it 'gets list of public files' do
         SuperUpload::Application.any_instance.should_receive(:public_files)
-        
+
         get '/uploads/foo'
     end
   end

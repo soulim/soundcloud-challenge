@@ -7,18 +7,18 @@ describe SuperUpload::ProgressIdHelpers do
   subject do
     double('app', params: {}, request: {}).extend(SuperUpload::ProgressIdHelpers)
   end
-  
+
   describe '#generate_progress_id' do
     it 'generates ID using MD5 hex digest' do
       Digest::MD5.should_receive(:hexdigest)
       subject.generate_progress_id
     end
   end
-  
+
   describe '#progress_id' do
     context 'if params contain X-Progress-ID key' do
       before { subject.stub(params: { 'X-Progress-ID' => id }) }
-      
+
       it 'returns progress ID' do
         subject.progress_id.should == id
       end
@@ -26,7 +26,7 @@ describe SuperUpload::ProgressIdHelpers do
 
     context 'if params contain :progress_id key' do
       before { subject.stub(params: { 'progress_id' => id }) }
-      
+
       it 'returns progress ID' do
         subject.progress_id.should == id
       end
@@ -34,7 +34,7 @@ describe SuperUpload::ProgressIdHelpers do
 
     context 'if request contains X-Progress-ID header' do
       before { subject.stub(request: { 'X-Progress-ID' => id }) }
-      
+
       it 'returns progress ID' do
         subject.progress_id.should == id
       end
@@ -45,7 +45,7 @@ describe SuperUpload::ProgressIdHelpers do
         subject.stub(params: {})
         subject.stub(request: {})
       end
-      
+
       it 'returns nil' do
         subject.progress_id.should be_nil
       end
