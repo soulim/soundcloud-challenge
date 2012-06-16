@@ -6,5 +6,5 @@
   <%=h @description %>
 </p>
 <p>
-  Files: <%= @files.map { |(filename, path)| "<a href=\"#{url(path)}\">#{filename}</a>" }.join(', ') %>
+  Files: <%= @files.map { |(filename, path)| "<a href=\"#{url(path)}\">#{h(filename)}</a>" }.join(', ') %>
 </p>
