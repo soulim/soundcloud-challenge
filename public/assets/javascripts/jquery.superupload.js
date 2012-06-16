@@ -8,15 +8,14 @@
       
       form.attr('target', null);
       fileInput.attr('disabled', 'disabled')
-    
-      timer = setInterval(function() { update(statusLabel) }, options.interval);
+      
+      setTimer(statusLabel);
     };
     
     function stop(statusLabel) {
-      clearInterval(timer);
-      
       $.ajax({
         'url': options.uploads_path + '/' + options.progress_id,
+        'cache': false,
         'success': function(data) {
             var links = [];
             
@@ -39,11 +38,19 @@
             progress = Math.round((data.received / data.size) * 100);
             statusLabel.text('Status: ' + progress + '%. ');
 
-            if (data.status == 'done') { stop(statusLabel); }
+            if (data.status == 'done') {
+              stop(statusLabel);
+            } else {
+              setTimer(statusLabel);
+            };
           }
       });
     };
-        
+    
+    function setTimer(statusLabel) {
+      setTimeout(function() { update(statusLabel); }, options.interval);
+    };
+    
     function setup(form) {
       var form        = $(form),
           fileInput   = form.find('input[type=file]'),
@@ -57,19 +64,18 @@
             });
       
       fileInput.change(function() {
-        start(form, fileInput, iframe, statusLabel)
+        start(form, fileInput, iframe, statusLabel);
       });
     };
 
-    var timer   = null,
-        options = $.extend({
+    var options = $.extend({
             uploads_path: '/uploads',
             status_path:  '/status',
             progress_id:  '',
             interval:     1000
           }, options);
 
-    return  this.each(function () {
+    return this.each(function () {
       setup(this);
     });
   };
